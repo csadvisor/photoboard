@@ -1,0 +1,39 @@
+extends layout
+
+block content
+	mixin photo(student)
+		img.img-rounded.img-responsive(src='http://localhost:3000/#{student.image}')
+		h4 #{student.firstName} #{student.lastName}
+	
+	- var PHOTOS_PER_ROW = 6;
+	- var ROWS = 2;
+
+	mixin sidebutton(left, enabled, nextpage)
+		- var margin = left ? ' mrl' : ' mll'
+		- var disabled = enabled ? '' : ' disabled' 
+		- var classes = 'btn btn-default half-height' + margin + disabled
+		a(href='/#{startsWith}/#{nextpage}' class = classes)
+			table.full-height
+				tr
+					td
+						- var icon = left ? 'glyphicon glyphicon-chevron-left' : 'glyphicon glyphicon-chevron-right'
+						span(class = icon)
+	
+	table
+		tr
+			td
+				+sidebutton(true, page, page - 1)
+				
+			td.content
+				- for (var i = 0; i < ROWS; i++)
+					.row
+						- var start = i * PHOTOS_PER_ROW
+						- for (var j = start; j < start + PHOTOS_PER_ROW; j++)
+							.col-sm-2.text-center
+								if j < students.length
+									+photo(students[j])
+								else
+									.photo-placeholder
+			td
+				+sidebutton(false, more, page + 1)
+			
