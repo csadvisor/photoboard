@@ -1,7 +1,7 @@
 #footer
 	ul.tabrow
 		each letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-			if startsWith.toUpperCase() == letter
+			if startsWith == letter
 				a(href="/#{letter}")
 					li.selected= letter
 			else

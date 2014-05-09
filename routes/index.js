@@ -6,14 +6,11 @@ var PHOTOS_PER_PAGE = 12;
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	db.find({}, function(err, docs) {
-		console.log(docs);
-		res.render('index', {students:  [], letter: null});
-	});
+	renderPhotos(res, 'A', 0);
 });
 
 router.param('letter', function(req, res, next, id) {
-	req.letter = id;
+	req.letter = id.toUpperCase();
 	next();
 });
 
