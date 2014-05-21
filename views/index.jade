@@ -10,8 +10,8 @@ block content
 
 	mixin sidebutton(left, enabled, nextpage)
 		- var margin = left ? ' mrl' : ' mll'
-		- var disabled = enabled ? '' : ' disabled' 
-		- var classes = 'btn btn-default half-height' + margin + disabled
+		- var hidden = enabled ? '' : ' invisible' 
+		- var classes = 'btn btn-default half-height' + margin + hidden
 		a(href='/#{startsWith}/#{nextpage}' class = classes)
 			table.full-height
 				tr
@@ -19,7 +19,7 @@ block content
 						- var icon = left ? 'glyphicon glyphicon-chevron-left' : 'glyphicon glyphicon-chevron-right'
 						span(class = icon)
 	
-	table
+	table.view
 		tr
 			td
 				+sidebutton(true, page, page - 1)
@@ -36,4 +36,13 @@ block content
 									.photo-placeholder
 			td
 				+sidebutton(false, more, page + 1)
-			
+		script.
+			var auto = "#{auto}" == 'true';
+			var startsWith = "#{startsWith}";
+			var more = "#{more}" == 'true' ? true : false;
+			var timeout = auto ? 6000 : 120000;
+			setTimeout(function(){
+				var nextLetter = (startsWith == 'z' || startsWith == 'Z') ? 'A' : String.fromCharCode(startsWith.charCodeAt(0)+1);
+				var next = more ? '/#{startsWith}/#{page + 1}?auto=true' : '/' + nextLetter + '?auto=true';
+				window.location.href = next;
+			}, timeout);

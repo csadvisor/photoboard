@@ -14,6 +14,14 @@ body {
 	text-align: center;
 }
 
+h1 {
+font-size:400%;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
 .mrl {
 	margin-right: 20px;
 }
@@ -34,8 +42,13 @@ body {
 	height: 30%;
 }
 
+.view {
+    margin-top: 70px;
+}
+
 .content {
 	height: 662px;
+  width: 1700px;
 }
 
 .photo-placeholder {
@@ -47,7 +60,7 @@ body {
 }
 
 .logo {
-	height: 65px;
+	height: 105px;
 }
 
 .tabrow {
@@ -79,7 +92,7 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
   text-shadow: 0 1px #FFF;
   margin: 0 -5px;
-  padding: 0 30px;
+  padding: 0 34.5px;
 }
 
 .tabrow a {
@@ -141,7 +154,7 @@ body {
 }
 
 .navbar {
-	height: 70px;
+	height: 110px;
 }
 
 .navbar-default {
@@ -155,6 +168,7 @@ body {
 }
 .navbar-default .navbar-text {
 	color: #ffffff;
+  padding-top: 15px;
 }
 .navbar-default .navbar-nav > li > a {
 	color: #ffffff;

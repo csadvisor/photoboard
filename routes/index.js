@@ -20,6 +20,7 @@ router.param('page', function(req, res, next, id) {
 });
 
 function renderPhotos(res, letter, page) {
+	var auto = req.query.auto;
 	re = new RegExp('^' + letter, 'i');
 	var skipAmt = page * PHOTOS_PER_PAGE;
 	db.find({lastName: {$regex: re}}).sort({lastName: 1}).skip(skipAmt).exec(function(err, docs) {
@@ -28,7 +29,7 @@ function renderPhotos(res, letter, page) {
 			docs = docs.slice(0, PHOTOS_PER_PAGE);
 		}
 
-		res.render('index', {students: docs, startsWith: letter, page: page, more: hasMore});
+		res.render('index', {students: docs, startsWith: letter, page: page, more: hasMore, auto: auto});
 	});
 }
 
