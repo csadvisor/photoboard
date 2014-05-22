@@ -20,6 +20,7 @@ var connection = mysql.createConnection({
 });
 
 var updateActiveStudents = function() {
+	console.log("updating active students...");
 	connection.query('select university_id from ug where inactive_qcode = 29999 order by university_id', function(err, rows, fields) {
 		if (err) throw err;
 		db.find().sort({suid: 1}).exec(function(err, docs) {
@@ -46,5 +47,5 @@ var updateActiveStudents = function() {
 
 
 updateActiveStudents();
-//update the active users every hour
-setInterval(updateActiveStudents(), 3600000);
+//update the active users every few minutes
+setInterval(updateActiveStudents, 300000);
