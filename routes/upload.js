@@ -47,7 +47,8 @@
 			firstName: fields.firstName[0],
 			lastName: fields.lastName[0],
 			suid: parseInt(fields.suid),
-			image: match[1]
+			image: match[1],
+			active: false
 		};
 
 		db.insert(doc, function(err, newDoc) {
@@ -69,5 +70,27 @@
 	});
 
 });
+
+router.post('/users', function(req, res, next) {
+	var form = new multiparty.Form();
+	var upload = {};
+
+	form.autoFiles = true;
+	form.uploadDir = './db';
+	form.on('error', next);
+	form.on('close', function(){
+		res.send(format('\nuploaded!'));
+	});
+
+	form.parse(req, function(err, fields, files) {
+		console.log(fields);
+		console.log(files);
+
+
+
+	});
+
+
+})
 
  module.exports = router;

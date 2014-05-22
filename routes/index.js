@@ -19,11 +19,10 @@ router.param('page', function(req, res, next, id) {
 	next();
 });
 
-function renderPhotos(res, letter, page) {
-	var auto = req.query.auto;
+function renderPhotos(res, letter, page, auto) {
 	re = new RegExp('^' + letter, 'i');
 	var skipAmt = page * PHOTOS_PER_PAGE;
-	db.find({lastName: {$regex: re}}).sort({lastName: 1}).skip(skipAmt).exec(function(err, docs) {
+	db.find({lastName: {$regex: re}, active: true}).sort({lastName: 1}).skip(skipAmt).exec(function(err, docs) {
 		var hasMore = docs.length > PHOTOS_PER_PAGE;
 		if (hasMore) {
 			docs = docs.slice(0, PHOTOS_PER_PAGE);
@@ -34,11 +33,11 @@ function renderPhotos(res, letter, page) {
 }
 
 router.get('/:letter', function(req, res) {
-	renderPhotos(res, req.letter, 0);
+	renderPhotos(res, req.letter, 0, req.query.auto);
 });
 
 router.get('/:letter/:page', function(req, res) {
-	renderPhotos(res, req.letter, req.page);
+	renderPhotos(res, req.letter, req.page, req.query.auto);
 });
 
 module.exports = router;

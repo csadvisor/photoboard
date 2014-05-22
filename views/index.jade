@@ -2,11 +2,12 @@ extends layout
 
 block content
 	mixin photo(student)
-		img.img-rounded.img-responsive(src='http://localhost:3000/#{student.image}')
+		img.img-rounded.img-responsive(src='/#{student.image}')
 		h4 #{student.firstName} #{student.lastName}
 	
 	- var PHOTOS_PER_ROW = 6;
 	- var ROWS = 2;
+	- var nextLetter = (startsWith == 'z' || startsWith == 'Z') ? 'A' : String.fromCharCode(startsWith.charCodeAt(0)+1);
 
 	mixin sidebutton(left, enabled, nextpage)
 		- var margin = left ? ' mrl' : ' mll'
@@ -36,13 +37,15 @@ block content
 									.photo-placeholder
 			td
 				+sidebutton(false, more, page + 1)
-		script.
-			var auto = "#{auto}" == 'true';
-			var startsWith = "#{startsWith}";
-			var more = "#{more}" == 'true' ? true : false;
-			var timeout = auto ? 6000 : 120000;
-			setTimeout(function(){
-				var nextLetter = (startsWith == 'z' || startsWith == 'Z') ? 'A' : String.fromCharCode(startsWith.charCodeAt(0)+1);
-				var next = more ? '/#{startsWith}/#{page + 1}?auto=true' : '/' + nextLetter + '?auto=true';
-				window.location.href = next;
-			}, timeout);
+
+
+	script.
+		var auto = "#{auto}" == 'true';
+		var nextLetter = "#{nextLetter}";
+		var timeout = auto ? 14000 : 120000;
+		var more = "#{more}" == 'true';
+		var next = more ? '/#{startsWith}/#{page + 1}?auto=true' : '/#{nextLetter}?auto=true';
+
+		setTimeout(function(){
+			window.location.href = next;
+		}, timeout);
