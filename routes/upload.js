@@ -11,6 +11,7 @@
  var exec = require('child_process').exec;
  var path = require('path');
  var db = require('./db');
+ require('log-timestamp');
 
 
  router.get('/', function(req, res){
@@ -48,7 +49,7 @@
 		};
 
 		db.insert(doc, function(err, newDoc) {
-			console.log("inserted!");
+			console.log("Inserted " + doc.firstName + " " + doc.lastName + "!");
 		});
 
 		//compress the file at some random point in the next hour to distribute load

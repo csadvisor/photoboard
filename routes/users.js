@@ -1,5 +1,6 @@
 var db = require('./db');
 var mysql      = require('mysql');
+require('log-timestamp');
 
 
 //check that username and password are defined
@@ -23,22 +24,31 @@ var updateActiveStudents = function() {
 	console.log("updating active students...");
 	connection.query('select university_id from ug where inactive_qcode = 29999 order by university_id', function(err, rows, fields) {
 		if (err) throw err;
+		console.log(rows.length + " active students found");
 		db.find().sort({suid: 1}).exec(function(err, docs) {
-			var myIndex = 0;
-			var sqlIndex = 0;
-			while (myIndex < docs.length && sqlIndex < rows.length) {
-				var mySuid = docs[myIndex].suid;
-				var sqlSuid = rows[sqlIndex].university_id;
-				if (mySuid == sqlSuid) {
-					db.update({ suid: mySuid }, { $set: { active: true } }, { multi: true }, function (err, numReplaced) {
+			var localIndex = 0;
+			var remoteIndex = 0;
+			while (localIndex < docs.length && remoteIndex < rows.length) {
+			        var currStudent = docs[localIndex];
+				var localSuid = currStudent.suid;
+				var remoteSuid = rows[remoteIndex].university_id;
+				if (localSuid == remoteSuid) {
+				    if (!currStudent.active) {
+						db.update({ suid: localSuid }, { $set: { active: true } }, { multi: true }, function (err, numReplaced) {
+							if (err) throw err;
+						});
+						console.log('Adding ' + currStudent.firstName + ' ' + currStudent.lastName);
+				    }
+					localIndex++;
+					remoteIndex++;
+				} else if (localSuid < remoteSuid) {
+					db.update({ suid: localSuid }, { $set: { active: false } }, { multi: true }, function (err, numReplaced) {
 						if (err) throw err
 					});
-					myIndex++;
-					sqlIndex++;
-				} else if (mySuid < sqlSuid) {
-					myIndex++;
+					console.log('Removing ' + currStudent.firstName + ' ' + currStudent.lastName);
+					localIndex++;
 				} else {
-					sqlIndex++;
+					remoteIndex++;
 				}
 			}
 		});

@@ -23,12 +23,17 @@ function renderPhotos(res, letter, page, auto) {
 	re = new RegExp('^' + letter, 'i');
 	var skipAmt = page * PHOTOS_PER_PAGE;
 	db.find({lastName: {$regex: re}, active: true}).sort({lastName: 1}).skip(skipAmt).exec(function(err, docs) {
-		var hasMore = docs.length > PHOTOS_PER_PAGE;
-		if (hasMore) {
-			docs = docs.slice(0, PHOTOS_PER_PAGE);
-		}
+		if (docs.length == 0) {
+			var nextLetter = (startsWith == 'z' || startsWith == 'Z') ? 'A' : String.fromCharCode(startsWith.charCodeAt(0)+1);
+			renderPhotos(res, nextLetter, 0, auto);
+		} else {
+			var hasMore = docs.length > PHOTOS_PER_PAGE;
+			if (hasMore) {
+				docs = docs.slice(0, PHOTOS_PER_PAGE);
+			}
 
-		res.render('index', {students: docs, startsWith: letter, page: page, more: hasMore, auto: auto});
+			res.render('index', {students: docs, startsWith: letter, page: page, more: hasMore, auto: auto});
+		}
 	});
 }
 
