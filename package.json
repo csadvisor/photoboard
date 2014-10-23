@@ -7,7 +7,8 @@
     "forever": "node_modules/forever/bin/forever start ./bin/www",
     "kill": "node_modules/forever/bin/forever stop 0",
     "restart": "node_modules/forever/bin/forever restart ./bin/www",
-    "logs": "node_modules/forever/bin/forever logs"
+    "logs": "node_modules/forever/bin/forever logs",
+    "tail": "node_modules/forever/bin/forever logs | grep bin\/www | sed -e 's/^.*bin\/www[^\/]*\(.*\.log\).*$/\1/' | xargs tail -f"
   },
   "dependencies": {
     "express": "~4.0.0",
