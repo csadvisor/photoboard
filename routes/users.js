@@ -42,11 +42,13 @@ var updateActiveStudents = function() {
 					localIndex++;
 					remoteIndex++;
 				} else if (localSuid < remoteSuid) {
+				    if (currStudent.active) {
 					db.update({ suid: localSuid }, { $set: { active: false } }, { multi: true }, function (err, numReplaced) {
 						if (err) throw err
 					});
 					console.log('Removing ' + currStudent.firstName + ' ' + currStudent.lastName);
-					localIndex++;
+				    }
+				    localIndex++;
 				} else {
 					remoteIndex++;
 				}

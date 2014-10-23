@@ -24,7 +24,7 @@ function renderPhotos(res, letter, page, auto) {
 	var skipAmt = page * PHOTOS_PER_PAGE;
 	db.find({lastName: {$regex: re}, active: true}).sort({lastName: 1}).skip(skipAmt).exec(function(err, docs) {
 		if (docs.length == 0) {
-			var nextLetter = (startsWith == 'z' || startsWith == 'Z') ? 'A' : String.fromCharCode(startsWith.charCodeAt(0)+1);
+			var nextLetter = (letter == 'z' || letter == 'Z') ? 'A' : String.fromCharCode(startsWith.charCodeAt(0)+1);
 			renderPhotos(res, nextLetter, 0, auto);
 		} else {
 			var hasMore = docs.length > PHOTOS_PER_PAGE;
